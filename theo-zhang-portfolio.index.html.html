@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>张润哲 · Theo Zhang</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Noto+Serif+SC:wght@300;400;700&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f5f0;
+  --bg2: #eeebe3;
+  --ink: #1a1814;
+  --ink2: #4a4640;
+  --ink3: #8a8278;
+  --accent: #1e3a5f;
+  --accent2: #2d5f8a;
+  --gold: #b8860b;
+  --gold-light: #d4a017;
+  --border: #ddd9d0;
+  --white: #ffffff;
+  --card: #faf9f6;
+  --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Outfit', 'Noto Serif SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── LANG TOGGLE ── */
+.lang-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 999;
+  display: flex;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.lang-btn {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--ink3);
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 24px 52px;
+  position: relative;
+  background: var(--ink);
+  overflow: hidden;
+}
+
+.hero-bg-text {
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  transform: translateY(-60%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(100px, 35vw, 200px);
+  font-weight: 700;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  user-select: none;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 24px;
+  width: fit-content;
+  opacity: 0;
+  animation: fadeUp 0.7s forwards 0.1s;
+}
+.hero-tag-dot {
+  width: 6px; height: 6px;
+  background: var(--gold-light);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.hero-name {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-size: clamp(56px, 15vw, 96px);
+  font-weight: 700;
+  color: white;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  opacity: 0;
+  animation: fadeUp 0.7s forwards 0.25s;
+}
+.hero-name-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 5vw, 28px);
+  font-weight: 300;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.7s forwards 0.35s;
+}
+
+.hero-role {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 0.7s forwards 0.45s;
+}
+.hero-role-text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 300;
+}
+.hero-role-badge {
+  padding: 4px 12px;
+  background: var(--gold);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.05em;
+}
+
+.hero-cities {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.7s forwards 0.55s;
+}
+.city-tag {
+  padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.05em;
+}
+
+/* ── NAV DOTS ── */
+.nav-dots {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.nav-dot.active { background: var(--accent); transform: scale(1.4); }
+
+/* ── SECTIONS ── */
+section {
+  padding: 64px 24px;
+}
+section:nth-child(even) { background: var(--bg2); }
+
+.section-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── ABOUT ── */
+.about-mbti {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--accent);
+  border-radius: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: white;
+  font-weight: 400;
+  margin-bottom: 24px;
+  letter-spacing: 0.1em;
+}
+.about-headline {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-size: clamp(26px, 7vw, 38px);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.about-body {
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.85;
+  margin-bottom: 28px;
+}
+
+.thinking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.thinking-tag {
+  padding: 9px 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--ink2);
+  text-align: center;
+  font-weight: 400;
+}
+
+/* ── SKILLS ── */
+.skills-tier {
+  margin-bottom: 36px;
+}
+.tier-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.tier-badge {
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+}
+.tier-1 .tier-badge { background: var(--ink); color: var(--gold-light); }
+.tier-2 .tier-badge { background: var(--accent); color: white; }
+.tier-3 .tier-badge { background: var(--bg2); color: var(--ink2); border: 1px solid var(--border); }
+
+.tier-label {
+  font-size: 11px;
+  color: var(--ink3);
+  letter-spacing: 0.05em;
+}
+
+.skill-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 18px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.skill-item:hover { border-color: var(--accent2); box-shadow: 0 4px 16px rgba(30,58,95,0.08); }
+
+.skill-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.skill-emoji { font-size: 20px; }
+.skill-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  flex: 1;
+}
+.skill-name-en { font-size: 12px; color: var(--ink3); }
+.skill-desc {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+
+/* ── EXPERIENCE ── */
+.exp-item {
+  position: relative;
+  padding-left: 20px;
+  padding-bottom: 36px;
+  border-left: 2px solid var(--border);
+}
+.exp-item:last-child { padding-bottom: 0; border-left-color: transparent; }
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+}
+
+.exp-header {
+  margin-bottom: 10px;
+}
+.exp-period {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.exp-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+.exp-title-en { font-size: 12px; color: var(--ink3); margin-bottom: 8px; }
+.exp-company {
+  display: inline-flex;
+  padding: 3px 10px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 11px;
+  color: var(--ink2);
+  margin-bottom: 10px;
+}
+.exp-desc {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+.exp-lesson {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(184,134,11,0.06);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.6;
+}
+.lesson-icon { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+
+/* ── AI ── */
+.ai-card {
+  background: var(--ink);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  color: white;
+  margin-bottom: 16px;
+}
+.ai-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  color: white;
+}
+.ai-title em { color: var(--gold-light); font-style: normal; }
+.ai-body { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 20px; }
+.ai-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.ai-stat {
+  text-align: center;
+  padding: 14px 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+.ai-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.ai-stat-label { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; }
+
+.ai-vision {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.ai-vision-icon { font-size: 24px; flex-shrink: 0; }
+.ai-vision-text { font-size: 14px; color: var(--ink2); line-height: 1.7; }
+.ai-vision-text strong { color: var(--ink); }
+
+/* ── CONTACT ── */
+.contact-intro {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-size: clamp(22px, 6vw, 32px);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 28px;
+}
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.2s;
+}
+.contact-link:hover {
+  border-color: var(--accent);
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(30,58,95,0.08);
+}
+.contact-icon {
+  width: 40px; height: 40px;
+  background: var(--bg2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.contact-info { flex: 1; }
+.contact-label { font-size: 10px; color: var(--ink3); letter-spacing: 0.05em; margin-bottom: 2px; }
+.contact-value { font-size: 14px; font-weight: 500; }
+.contact-arrow { color: var(--ink3); font-size: 16px; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 36px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  background: var(--ink);
+}
+.footer-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: white;
+  margin-bottom: 6px;
+}
+.footer-sub { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── LANG SWITCH ── */
+.zh { display: block; }
+.en { display: none; }
+.lang-en .zh { display: none; }
+.lang-en .en { display: block; }
+.zh-i { display: inline; }
+.en-i { display: none; }
+.lang-en .zh-i { display: none; }
+.lang-en .en-i { display: inline; }
+</style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('zh')" id="btn-zh">中文</button>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+</div>
+
+<!-- Nav Dots -->
+<nav class="nav-dots" id="navDots">
+  <div class="nav-dot active" onclick="scrollToSection(0)" title="首页"></div>
+  <div class="nav-dot" onclick="scrollToSection(1)" title="关于"></div>
+  <div class="nav-dot" onclick="scrollToSection(2)" title="专长"></div>
+  <div class="nav-dot" onclick="scrollToSection(3)" title="经历"></div>
+  <div class="nav-dot" onclick="scrollToSection(4)" title="AI"></div>
+  <div class="nav-dot" onclick="scrollToSection(5)" title="联系"></div>
+</nav>
+
+<!-- ① HERO -->
+<section class="hero" id="s0">
+  <div class="hero-bg-text">TZ</div>
+
+  <div class="hero-tag">
+    <div class="hero-tag-dot"></div>
+    <span class="zh-i">连续创业者 · CEO</span>
+    <span class="en-i">Serial Entrepreneur · CEO</span>
+  </div>
+
+  <div class="hero-name">
+    <span class="zh-i">张润哲</span>
+    <span class="en-i">Theo</span>
+  </div>
+  <div class="hero-name-en">
+    <span class="zh-i">Theo Zhang</span>
+    <span class="en-i">Zhang</span>
+  </div>
+
+  <div class="hero-role">
+    <div class="hero-role-badge">LZMH</div>
+    <div class="hero-role-text">
+      <span class="zh-i">联掌门户 CEO · 中国智慧社区第一股</span>
+      <span class="en-i">CEO of LZMH · China's #1 Smart Community Listed Co.</span>
+    </div>
+  </div>
+
+  <div class="hero-cities">
+    <div class="city-tag">厦门 Xiamen</div>
+    <div class="city-tag">杭州 Hangzhou</div>
+    <div class="city-tag">上海 Shanghai</div>
+  </div>
+</section>
+
+<!-- ② ABOUT -->
+<section id="s1">
+  <div class="section-meta">
+    <span class="section-num">01</span>
+    <span class="section-title"><span class="zh-i">关于我</span><span class="en-i">About</span></span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="about-mbti reveal">ENTJ</div>
+
+  <h2 class="about-headline reveal">
+    <span class="zh">五次创业，<br>一次纳斯达克。<br>故事还在继续。</span>
+    <span class="en">Five ventures.<br>One Nasdaq IPO.<br>The story continues.</span>
+  </h2>
+
+  <p class="about-body reveal">
+    <span class="zh">我是张润哲，一个从校园餐饮起步、横跨北美与中国市场、最终带领联掌门户登陆纳斯达克的连续创业者。每一次失败都是一本教科书，每一次成功都是下一段旅程的起点。</span>
+    <span class="en">I'm Theo Zhang — a serial entrepreneur who started with campus food delivery, crossed markets between North America and China, and led LZMH to a Nasdaq IPO. Every failure is a textbook; every success, a new starting line.</span>
+  </p>
+
+  <p class="about-body reveal" style="margin-bottom:28px;">
+    <span class="zh">我的思维武器库：</span>
+    <span class="en">My thinking toolkit:</span>
+  </p>
+
+  <div class="thinking-grid reveal">
+    <div class="thinking-tag"><span class="zh-i">批判性思维</span><span class="en-i">Critical</span></div>
+    <div class="thinking-tag"><span class="zh-i">抽象思维</span><span class="en-i">Abstract</span></div>
+    <div class="thinking-tag"><span class="zh-i">系统性思维</span><span class="en-i">Systematic</span></div>
+    <div class="thinking-tag"><span class="zh-i">创造性思维</span><span class="en-i">Creative</span></div>
+    <div class="thinking-tag"><span class="zh-i">分析性思维</span><span class="en-i">Analytical</span></div>
+    <div class="thinking-tag"><span class="zh-i">聚合性思维</span><span class="en-i">Convergent</span></div>
+    <div class="thinking-tag" style="grid-column: 1/-1; text-align:center;"><span class="zh-i">演绎思维</span><span class="en-i">Deductive</span></div>
+  </div>
+</section>
+
+<!-- ③ SKILLS -->
+<section id="s2">
+  <div class="section-meta">
+    <span class="section-num">02</span>
+    <span class="section-title"><span class="zh-i">专长段位</span><span class="en-i">Skills & Mastery</span></span>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- Tier 1 -->
+  <div class="skills-tier tier-1 reveal">
+    <div class="tier-header">
+      <div class="tier-badge">1/10,000</div>
+      <div class="tier-label"><span class="zh-i">万分之一 · 顶尖</span><span class="en-i">Top 0.01%</span></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">🚀</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">创业</span><span class="en-i">Entrepreneurship</span></div>
+          <div class="skill-name-en">Startup · IPO · Strategy</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">成功带领公司完成纳斯达克IPO，达到行业第一。五次创业积累的对商业本质的深刻理解，是核心竞争力。</span>
+        <span class="en">Successfully led the company to a Nasdaq IPO, achieving industry leadership. Deep understanding of business fundamentals across five ventures is the core edge.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tier 2 -->
+  <div class="skills-tier tier-2 reveal">
+    <div class="tier-header">
+      <div class="tier-badge">1/1,000</div>
+      <div class="tier-label"><span class="zh-i">千分之一 · 精英</span><span class="en-i">Top 0.1%</span></div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">🎵</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">音乐</span><span class="en-i">Music</span></div>
+          <div class="skill-name-en">Singer → Original Artist</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">城市级比赛可拿名次，正从歌手向原创音乐人转型，今年计划发布新专辑。</span>
+        <span class="en">City-level competition medalist, transitioning from performer to original artist. New album planned for this year.</span>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">🎮</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">游戏</span><span class="en-i">Gaming</span></div>
+          <div class="skill-name-en">DOTA Top 100 · 15,000+ hrs</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">DOTA天梯曾进全服前100。累计游戏体验超1.5万小时，全品类覆盖，从3A大作到独立游戏无所不通，乙游除外。</span>
+        <span class="en">DOTA ranked Top 100 on the server. 15,000+ hours of gaming experience across virtually all genres — AAA titles, indie games, mobile — everything except otome games.</span>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">📚</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">网络小说</span><span class="en-i">Web Fiction</span></div>
+          <div class="skill-name-en">3亿字 · 男频权威</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">阅读量超过3亿字，2009年以来男频排名前5的小说基本全覆盖，熟悉各种设定、套路与叙事结构。</span>
+        <span class="en">Read over 300 million characters of web fiction. Covered virtually all top-5 ranked male-oriented novels since 2009, with deep familiarity in tropes and narrative structures.</span>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">🃏</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">德州扑克</span><span class="en-i">Texas Hold'em</span></div>
+          <div class="skill-name-en">10万手 · 稳定盈利</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">10万手实战经验，悟道后稳定盈利，资金回报率达30%–50%。</span>
+        <span class="en">100,000 hands of live experience. After finding my edge, maintaining stable profitability at 30–50% ROI.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tier 3 -->
+  <div class="skills-tier tier-3 reveal">
+    <div class="tier-header">
+      <div class="tier-badge">1/100</div>
+      <div class="tier-label"><span class="zh-i">百分之一 · 进阶</span><span class="en-i">Top 1%</span></div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">🏀</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">篮球</span><span class="en-i">Basketball</span></div>
+          <div class="skill-name-en">自我感觉良好型 😄</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">自我感觉前1%，实际可能略低，但热爱从未打折。</span>
+        <span class="en">Self-assessed top 1%, actual ranking TBD — but the passion is undeniable.</span>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">💪</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">健身</span><span class="en-i">Fitness</span></div>
+          <div class="skill-name-en">卧推峰值 140kg × 3</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">巅峰卧推140KG×3次，健身8年。没有比我更懂减肥的胖子了 😢</span>
+        <span class="en">Peak bench press: 140kg × 3 reps. 8 years of training. No one understands the weight-loss struggle more than a big guy who's lived it 😢</span>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-top">
+        <span class="skill-emoji">💬</span>
+        <div>
+          <div class="skill-name"><span class="zh-i">情感分析</span><span class="en-i">Emotional Intelligence</span></div>
+          <div class="skill-name-en">朋友圈的情感军师</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <span class="zh">朋友有感情或事业问题，首选来找我。大部分情况下能有效疏解并给出可执行的优化方案。</span>
+        <span class="en">The go-to advisor in my circle for relationship and career issues. Can usually de-escalate situations and deliver actionable improvement plans.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ EXPERIENCE -->
+<section id="s3">
+  <div class="section-meta">
+    <span class="section-num">03</span>
+    <span class="section-title"><span class="zh-i">创业历程</span><span class="en-i">Journey</span></span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-header">
+      <div class="exp-period">2020 — 现在 · Present</div>
+      <div class="exp-title"><span class="zh-i">联掌门户（LZMH）</span><span class="en-i">LZMH (联掌门户)</span></div>
+      <div class="exp-title-en"><span class="zh-i">CEO · 中国智慧社区第一股</span><span class="en-i">CEO · China's #1 Smart Community Listed Co.</span></div>
+      <div class="exp-company"><span class="zh-i">第五次创业 · 纳斯达克上市</span><span class="en-i">5th Venture · Nasdaq IPO</span></div>
+    </div>
+    <div class="exp-desc">
+      <span class="zh">基于门禁硬件为入口，打造"广告 + 设备 + 电商"飞轮效应，成为中国智慧社区行业第一股，成功登陆纳斯达克。</span>
+      <span class="en">Built a flywheel of "advertising + hardware + e-commerce" using smart access control as the entry point. Became the #1 listed smart community company in China on Nasdaq.</span>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-header">
+      <div class="exp-period">2018 — 2020</div>
+      <div class="exp-title"><span class="zh-i">Simply Herb / Beyond Chain</span><span class="en-i">Simply Herb / Beyond Chain</span></div>
+      <div class="exp-title-en"><span class="zh-i">Co-Founder · 商贸与区块链PR</span><span class="en-i">Co-Founder · Trade & Blockchain PR</span></div>
+      <div class="exp-company"><span class="zh-i">第四次创业</span><span class="en-i">4th Venture</span></div>
+    </div>
+    <div class="exp-desc">
+      <span class="zh">一个代理中国健康食品出口美国，一个帮助区块链企业在美国做品牌与公关。</span>
+      <span class="en">One venture distributed Chinese health food products in the US market; the other handled US branding and PR for blockchain companies.</span>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-header">
+      <div class="exp-period">2017 — 2019</div>
+      <div class="exp-title"><span class="zh-i">Nova One</span><span class="en-i">Nova One</span></div>
+      <div class="exp-title-en"><span class="zh-i">Co-Founder · 南加州非营利创投</span><span class="en-i">Co-Founder · SoCal Non-profit VC Org</span></div>
+      <div class="exp-company"><span class="zh-i">第三次创业</span><span class="en-i">3rd Venture</span></div>
+    </div>
+    <div class="exp-desc">
+      <span class="zh">南加州非营利创投组织，聚焦区块链、生物技术、量子计算等前沿领域实验室项目的商业化落地。</span>
+      <span class="en">A Southern California non-profit venture organization focused on commercializing lab projects in blockchain, biotech, and quantum computing.</span>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-header">
+      <div class="exp-period">2016 — 2018</div>
+      <div class="exp-title"><span class="zh-i">华人Life</span><span class="en-i">Huaren Life</span></div>
+      <div class="exp-title-en"><span class="zh-i">CMO · 北美华人媒体</span><span class="en-i">CMO · Chinese-American Media</span></div>
+      <div class="exp-company"><span class="zh-i">第二次创业</span><span class="en-i">2nd Venture</span></div>
+    </div>
+    <div class="exp-desc">
+      <span class="zh">北美新闻类公众号，负责内容策划、商务拓展与渠道合作。</span>
+      <span class="en">A news-focused WeChat account targeting North American Chinese. Led content, business development, and channel partnerships.</span>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-header">
+      <div class="exp-period">2014 — 2016</div>
+      <div class="exp-title"><span class="zh-i">Hillotask</span><span class="en-i">Hillotask</span></div>
+      <div class="exp-title-en"><span class="zh-i">COO · 校园O2O平台</span><span class="en-i">COO · Campus O2O Platform</span></div>
+      <div class="exp-company"><span class="zh-i">第一次创业</span><span class="en-i">1st Venture</span></div>
+    </div>
+    <div class="exp-desc">
+      <span class="zh">从校园送餐转型为校园任务平台，获得15万美元融资。</span>
+      <span class="en">Pivoted from campus food delivery to a campus task marketplace. Raised $150K in funding.</span>
+    </div>
+    <div class="exp-lesson">
+      <span class="lesson-icon">💡</span>
+      <span>
+        <span class="zh">死于过度投入技术（12万花在APP研发）和伪需求——送餐是刚需，但任务不是。这是我学到最贵的一课。</span>
+        <span class="en">Failed from over-engineering ($120K on app dev) and false demand — food delivery is a real need, tasks are not. The most expensive lesson I ever paid for.</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ AI -->
+<section id="s4">
+  <div class="section-meta">
+    <span class="section-num">04</span>
+    <span class="section-title"><span class="zh-i">AI 探索</span><span class="en-i">AI Journey</span></span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="ai-card reveal">
+    <div class="ai-title">
+      <span class="zh">正在成为<br><em>AI领域</em>的<br>万分之一。</span>
+      <span class="en">Becoming the<br><em>1-in-10,000</em><br>in AI.</span>
+    </div>
+    <div class="ai-body">
+      <span class="zh">我相信AI是下一个时代的基础设施。正在努力学习，从工具使用者到应用构建者。</span>
+      <span class="en">I believe AI is the infrastructure of the next era. Working hard to evolve from a user to a builder.</span>
+    </div>
+    <div class="ai-stats">
+      <div class="ai-stat">
+        <div class="ai-stat-num">30+</div>
+        <div class="ai-stat-label"><span class="zh-i">Claude Code 小时</span><span class="en-i">Claude Code hrs</span></div>
+      </div>
+      <div class="ai-stat">
+        <div class="ai-stat-num">4</div>
+        <div class="ai-stat-label"><span class="zh-i">独立应用</span><span class="en-i">Apps Built</span></div>
+      </div>
+      <div class="ai-stat">
+        <div class="ai-stat-num">∞</div>
+        <div class="ai-stat-label"><span class="zh-i">成长空间</span><span class="en-i">Room to Grow</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-vision reveal">
+    <div class="ai-vision-icon">🎯</div>
+    <div class="ai-vision-text">
+      <span class="zh"><strong>目标：</strong>用创业者的视角 + AI工具，构建下一代智能产品。我在创业上已经做到了万分之一，在AI上我会的。</span>
+      <span class="en"><strong>Vision:</strong> Combine an entrepreneur's mindset with AI tools to build next-generation intelligent products. I've reached 1-in-10,000 in entrepreneurship — I'll do it in AI too.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ CONTACT -->
+<section id="s5">
+  <div class="section-meta">
+    <span class="section-num">05</span>
+    <span class="section-title"><span class="zh-i">联系我</span><span class="en-i">Get in Touch</span></span>
+    <div class="section-line"></div>
+  </div>
+
+  <h2 class="contact-intro reveal">
+    <span class="zh">有想法？<br>欢迎找我聊聊。</span>
+    <span class="en">Have an idea?<br>Let's talk.</span>
+  </h2>
+
+  <div class="contact-links">
+    <a href="mailto:13959288711@163.com" class="contact-link reveal">
+      <div class="contact-icon">✉️</div>
+      <div class="contact-info">
+        <div class="contact-label">Email</div>
+        <div class="contact-value">13959288711@163.com</div>
+      </div>
+      <div class="contact-arrow">→</div>
+    </a>
+    <a href="#" class="contact-link reveal">
+      <div class="contact-icon">💬</div>
+      <div class="contact-info">
+        <div class="contact-label">微信 WeChat</div>
+        <div class="contact-value">13959288711</div>
+      </div>
+      <div class="contact-arrow">→</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">张润哲 · Theo Zhang</div>
+  <div class="footer-sub">
+    <span class="zh-i">连续创业者 · 联掌门户 CEO · 厦门 / 杭州 / 上海</span>
+    <span class="en-i">Serial Entrepreneur · CEO of LZMH · Xiamen / Hangzhou / Shanghai</span>
+  </div>
+</footer>
+
+<script>
+// ── Lang ──
+function setLang(lang) {
+  document.body.className = lang === 'en' ? 'lang-en' : '';
+  document.getElementById('btn-zh').className = 'lang-btn' + (lang === 'zh' ? ' active' : '');
+  document.getElementById('btn-en').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
+}
+
+// ── Scroll Reveal ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), 80);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Nav Dots ──
+const sections = ['s0','s1','s2','s3','s4','s5'].map(id => document.getElementById(id));
+const dots = document.querySelectorAll('.nav-dot');
+
+function scrollToSection(i) {
+  sections[i].scrollIntoView({ behavior: 'smooth' });
+}
+
+const dotObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const idx = sections.indexOf(entry.target);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => dotObserver.observe(s));
+</script>
+</body>
+</html>
